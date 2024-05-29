@@ -1,10 +1,47 @@
 <script>
+	import Cursor from '$lib/cursor.svelte';
+	import { onMount } from 'svelte';
 	import '../app.scss';
+
+	let isTouch = false;
+
+	const detectTouchscreen = () => {
+		let result = false;
+		if (window.PointerEvent && 'maxTouchPoints' in navigator) {
+			// if Pointer Events are supported, just check maxTouchPoints
+			if (navigator.maxTouchPoints > 0) {
+				result = true;
+			}
+		} else {
+			// no Pointer Events...
+			if (window.matchMedia && window.matchMedia('(any-pointer:coarse)').matches) {
+				// check for any-pointer:coarse which mostly means touchscreen
+				result = true;
+			} else if (window.TouchEvent || 'ontouchstart' in window) {
+				// last resort - check for exposed touch events API / event handler
+				result = true;
+			}
+		}
+		isTouch = result;
+	};
+
+	onMount(() => {
+		detectTouchscreen();
+		window.addEventListener('resize', detectTouchscreen);
+
+		return () => {
+			window.removeEventListener('resize', detectTouchscreen);
+		};
+	});
 </script>
 
 <main class="flex items-center justify-center">
 	<div class="noise"></div>
 	<slot />
+
+	{#if !isTouch}
+		<Cursor />
+	{/if}
 </main>
 
 <style lang="postcss">
