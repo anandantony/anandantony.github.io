@@ -3,8 +3,8 @@
 	import { spring } from 'svelte/motion';
 	import { fade } from 'svelte/transition';
 
-	let centerCoords = { x: 50, y: 50 };
 	let clickable = false;
+	let centerCoords = { x: 50, y: 50 };
 	let coords = spring(
 		{ x: 50, y: 50 },
 		{
@@ -22,6 +22,7 @@
 	const mouseDown = () => size.set(30);
 
 	const mouseOver = (e: MouseEvent) => {
+		// TODO: implement for other cursor types (refer https://developer.mozilla.org/en-US/docs/Web/CSS/cursor#formal_syntax)
 		if ((e.target as HTMLElement).closest(':is(a, button, label, select, input), [role=button]')) {
 			size.set(20);
 			clickable = true;
@@ -34,6 +35,9 @@
 	};
 
 	onMount(() => {
+		const mouse = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
+		centerCoords = structuredClone(mouse);
+		coords.set(mouse);
 		document.addEventListener('mousemove', mouseMove);
 		document.addEventListener('mouseup', mouseUp);
 		document.addEventListener('mousedown', mouseDown);
@@ -57,7 +61,7 @@
 		id="c1"
 		cx={centerCoords.x}
 		cy={centerCoords.y}
-		r={$size}
+		r={$size - 4}
 		fill={clickable ? '#dddddd22' : '#ddd'}
 	/>
 	<circle cx={$coords.x} cy={$coords.y} r={$size + 2} stroke="#fff" fill="transparent" />
