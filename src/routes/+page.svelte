@@ -9,7 +9,7 @@
 	// let el: HTMLCanvasElement;
 	let visible = false;
 	let i = -1;
-	let message = '...';
+	let message = ' ';
 	let speed = 1;
 	let messageTimeout: number | undefined;
 
@@ -34,7 +34,7 @@
 			visible = true;
 		}, 500);
 
-		messageTimeout = setTimeout(nextMessage, 1500);
+		messageTimeout = setTimeout(nextMessage, 500);
 
 		return () => {
 			clearTimeout(timeout);
@@ -56,9 +56,14 @@
 		in:fade
 	>
 		{#key i}
-			<p class="font-bold text-white hero glitch layers" data-text={message}>
-				<span class="font-bold" in:typewriter={{ speed }} out:typewriter={{ speed: speed * 2 }}
-					>{message}</span
+			<p
+				class="font-bold text-white hero glitch layers max-w-[90vw] break-words"
+				data-text={message}
+			>
+				<span
+					class="font-bold w-full inline-block break-words"
+					in:typewriter={{ speed }}
+					out:typewriter={{ speed: speed * 2 }}>{message}</span
 				>
 			</p>
 		{/key}

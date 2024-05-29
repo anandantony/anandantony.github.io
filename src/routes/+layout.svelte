@@ -1,10 +1,12 @@
 <script>
+	import Cursor from '$lib/cursor.svelte';
 	import '../app.scss';
 </script>
 
 <main class="flex items-center justify-center">
 	<div class="noise"></div>
 	<slot />
+	<Cursor />
 </main>
 
 <style lang="postcss">
