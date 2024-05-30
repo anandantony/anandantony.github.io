@@ -19,10 +19,7 @@ const config = {
 			precompress: false,
 			strict: true,
 			fallback: 'index.html'
-		}),
-		paths: {
-			base: process.argv.includes('dev') ? '' : process.env.BASE_PATH
-		}
+		})
 	}
 };
 
