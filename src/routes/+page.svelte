@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { fade } from 'svelte/transition';
+	import { fade, fly } from 'svelte/transition';
 	import { onMount } from 'svelte';
 	import { typewriter } from '$lib/transitions';
 	import { messages } from '$lib/messages';
@@ -63,7 +63,7 @@
 				<span
 					class="font-bold w-full inline-block break-words"
 					in:typewriter={{ speed }}
-					out:typewriter={{ speed: speed * 2 }}>{message}</span
+					out:fly={{ y: -100, duration: 100 }}>{message}</span
 				>
 			</p>
 		{/key}

@@ -60,7 +60,7 @@
 		z-index: -1;
 		&::after {
 			animation: grain 5s steps(10) infinite;
-			background: url('noise.png');
+			background: url('$lib/images/noise.png');
 			filter: invert();
 			content: '';
 			display: block;
