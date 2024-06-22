@@ -1,5 +1,5 @@
 <script>
-	import Cursor from '$lib/Cursor.svelte';
+	import Cursor from '$lib/cursor.svelte';
 	import { onMount } from 'svelte';
 	import '../app.scss';
 
