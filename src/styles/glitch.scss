@@ -2,7 +2,6 @@
 
 .hero {
 	line-height: 1;
-	display: inline-block;
 	color: #fff;
 	z-index: 2;
 	letter-spacing: 10px;
@@ -26,7 +25,6 @@
 	position: absolute;
 	width: 100%;
 	z-index: -1;
-	overflow-wrap: break-word;
 	pointer-events: none;
 }
 

@@ -3,3 +3,11 @@
 @tailwind utilities;
 
 @import './styles/glitch.scss';
+
+* {
+	box-sizing: border-box;
+}
+
+html {
+	background-color: #000;
+}

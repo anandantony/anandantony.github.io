@@ -13,10 +13,12 @@
 		}
 	);
 	let size = spring(10);
+	let opacity = spring(1);
 
 	const mouseMove = (e: MouseEvent) => {
 		centerCoords = { x: e.clientX, y: e.clientY };
 		coords.set({ x: e.clientX, y: e.clientY });
+		opacity.set(1);
 	};
 	const mouseUp = () => size.set(10);
 	const mouseDown = () => size.set(30);
@@ -34,6 +36,16 @@
 		clickable = false;
 	};
 
+	const mouseEnter = (e: MouseEvent) => {
+		mouseOut(e);
+		opacity.set(1);
+	};
+
+	const mouseLeave = (e: MouseEvent) => {
+		mouseOut(e);
+		opacity.set(0);
+	};
+
 	onMount(() => {
 		const mouse = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
 		centerCoords = structuredClone(mouse);
@@ -44,6 +56,8 @@
 		document.addEventListener('mouseover', mouseOver);
 		document.addEventListener('mouseout', mouseOut);
 		document.addEventListener('dragleave', mouseUp);
+		document.addEventListener('mouseenter', mouseEnter);
+		document.addEventListener('mouseleave', mouseLeave);
 
 		return () => {
 			document.removeEventListener('mousemove', mouseMove);
@@ -52,11 +66,13 @@
 			document.removeEventListener('mouseover', mouseOver);
 			document.removeEventListener('mouseout', mouseOut);
 			document.removeEventListener('dragleave', mouseUp);
+			document.removeEventListener('mouseenter', mouseEnter);
+			document.removeEventListener('mouseleave', mouseLeave);
 		};
 	});
 </script>
 
-<svg role="presentation">
+<svg role="presentation" opacity={$opacity}>
 	<circle
 		id="c1"
 		cx={centerCoords.x}
@@ -93,7 +109,7 @@
 
 <style>
 	svg {
-		position: absolute;
+		position: fixed;
 		width: 100%;
 		height: 100%;
 		left: 0;
