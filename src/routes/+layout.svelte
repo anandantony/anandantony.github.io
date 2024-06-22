@@ -1,5 +1,5 @@
 <script>
-	import Cursor from '$lib/cursor.svelte';
+	import Cursor from '$lib/Cursor.svelte';
 	import { onMount } from 'svelte';
 	import '../app.scss';
 
@@ -35,8 +35,8 @@
 	});
 </script>
 
-<main class="flex items-center justify-center">
-	<div class="noise"></div>
+<!-- <div class="noise fixed"></div> -->
+<main class="h-screen w-full">
 	<slot />
 
 	{#if !isTouch}
@@ -45,19 +45,20 @@
 </main>
 
 <style lang="postcss">
-	@import url('https://fonts.googleapis.com/css2?family=Acme&family=Bangers&family=Limelight&display=swap');
+	@import url('https://fonts.googleapis.com/css2?family=Acme&family=Bangers&family=Limelight&family=Orbitron:wght@400..900&display=swap');
 	:global(body) {
 		margin: 0;
 		padding: 0;
-		overflow: hidden;
+		overflow-x: hidden;
+		cursor: none;
 	}
 
-	.noise {
-		position: absolute;
+	/* .noise {
 		inset: 0;
 		background-color: #050505;
 		overflow: hidden;
 		z-index: -1;
+		opacity: 0.9;
 		&::after {
 			animation: grain 5s steps(10) infinite;
 			background: url('$lib/images/noise.png');
@@ -69,7 +70,7 @@
 			z-index: 1;
 			opacity: 0.3;
 		}
-	}
+	} */
 
 	@keyframes -global-grain {
 		0%,
