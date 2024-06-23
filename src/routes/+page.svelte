@@ -10,7 +10,7 @@
 </Canvas>
 
 <div
-	class="trani absolute inset-0 bg-black transition-[background-color] duration-1000 {loaded
+	class="pointer-events-none absolute inset-0 bg-black transition-[background-color] duration-1000 {loaded
 		? 'animate-[blur_3s_ease-in-out_forwards] bg-transparent'
 		: ''}"
 ></div>

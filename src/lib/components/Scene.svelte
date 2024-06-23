@@ -23,7 +23,6 @@
 	import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js';
 	import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass.js';
 	import { FilmPass } from 'three/examples/jsm/postprocessing/FilmPass.js';
-	import { BokehPass } from 'three/examples/jsm/postprocessing/BokehPass.js';
 	import { HalftonePass } from 'three/examples/jsm/postprocessing/HalftonePass.js';
 
 	const dispatch = createEventDispatcher();
@@ -31,7 +30,7 @@
 	let planeRef: Mesh;
 	let sphereRef: Mesh;
 	let spaceshipRef: Group;
-	let spaceshipWidth: number;
+	let shipWidth: number;
 
 	let translateY = 0;
 	let translateYAccel = 0;
@@ -50,7 +49,7 @@
 		const aspect = innerWidth / innerHeight;
 		(camera.current as PerspectiveCamera).aspect = aspect;
 		(camera.current as PerspectiveCamera).fov =
-			2 * Math.atan(spaceshipWidth / aspect / (2 * 20)) * (180 / Math.PI);
+			2 * Math.atan(shipWidth / aspect / (2 * 20)) * (180 / Math.PI);
 		(camera.current as PerspectiveCamera).updateProjectionMatrix();
 		renderer.setSize(innerWidth, innerHeight);
 		composer.setSize(innerWidth, innerHeight);
@@ -178,7 +177,7 @@
 
 <Spaceship
 	bind:ref={spaceshipRef}
-	bind:width={spaceshipWidth}
+	bind:width={shipWidth}
 	on:loaded={meshLoaded}
 	position={[0, translateY, 0]}
 	rotation={[angleZ, 0, angleZ, 'ZXY']}
