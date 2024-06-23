@@ -4,13 +4,16 @@ Command: npx @threlte/gltf@2.0.3 .\static\models\spaceship.glb --transform
 -->
 
 <script lang="ts">
-	import { Group } from 'three';
+	import { Box3, Group, Vector3 } from 'three';
 	import { T, forwardEventHandlers } from '@threlte/core';
 	import { useGltf } from '@threlte/extras';
+	import { createEventDispatcher } from 'svelte';
 
 	export const ref = new Group();
+	export let width = 0;
 
 	const gltf = useGltf('/models/spaceship-transformed.glb', { useDraco: true });
+	const dispatch = createEventDispatcher();
 
 	gltf.then((model) => {
 		function alphaFix(material: Record<string, unknown>) {
@@ -21,6 +24,10 @@ Command: npx @threlte/gltf@2.0.3 .\static\models\spaceship.glb --transform
 		}
 		alphaFix(model.materials['spaceship_racer']);
 		alphaFix(model.materials['cockpit']);
+		const box = new Box3().setFromObject(model.scene);
+		const size = box.getSize(new Vector3());
+		width = size.x;
+		dispatch('loaded', true);
 	});
 
 	const component = forwardEventHandlers();
