@@ -3,7 +3,7 @@
 	import { T, useTask, useThrelte } from '@threlte/core';
 	// import { OrbitControls } from '@threlte/extras';
 	import { injectLookAtPlugin } from '../lookAtPlugin';
-	import { onMount } from 'svelte';
+	import { createEventDispatcher, onMount } from 'svelte';
 	import {
 		Raycaster,
 		Vector2,
@@ -14,7 +14,8 @@
 		Color,
 		Texture,
 		WebGLRenderTarget,
-		MeshStandardMaterial
+		MeshStandardMaterial,
+		PerspectiveCamera
 	} from 'three';
 	import Stars from './Stars.svelte';
 	import { OutputPass } from 'three/examples/jsm/postprocessing/OutputPass.js';
@@ -22,10 +23,14 @@
 	import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js';
 	import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass.js';
 	import { FilmPass } from 'three/examples/jsm/postprocessing/FilmPass.js';
+	import { HalftonePass } from 'three/examples/jsm/postprocessing/HalftonePass.js';
+
+	const dispatch = createEventDispatcher();
 
 	let planeRef: Mesh;
 	let sphereRef: Mesh;
 	let spaceshipRef: Group;
+	let shipWidth: number;
 
 	let translateY = 0;
 	let translateYAccel = 0;
@@ -41,15 +46,29 @@
 	const composer = new EffectComposer(renderer);
 
 	function resize() {
+		const aspect = innerWidth / innerHeight;
+		(camera.current as PerspectiveCamera).aspect = aspect;
+		(camera.current as PerspectiveCamera).fov =
+			2 * Math.atan(shipWidth / aspect / (2 * 20)) * (180 / Math.PI);
+		(camera.current as PerspectiveCamera).updateProjectionMatrix();
 		renderer.setSize(innerWidth, innerHeight);
 		composer.setSize(innerWidth, innerHeight);
 	}
 
-	resize();
-
 	const setupEffectsComposer = () => {
 		const renderPass = new RenderPass(scene, camera.current);
 		composer.addPass(renderPass);
+
+		const halftoneEffect = new HalftonePass(innerWidth, innerHeight, {
+			radius: 5,
+			rotateR: 8,
+			rotateG: 45,
+			rotateB: 30,
+			scatter: 0,
+			blending: 1,
+			blendingMode: 4
+		});
+		composer.addPass(halftoneEffect);
 
 		const bloomPass = new UnrealBloomPass(new Vector2(innerWidth, innerHeight), 0.275, 1, 0);
 		composer.addPass(bloomPass);
@@ -98,7 +117,7 @@
 				}
 			});
 
-			composer.render();
+			composer.render(delta);
 		},
 		{ stage: renderStage, autoInvalidate: false }
 	);
@@ -133,10 +152,21 @@
 		};
 	});
 
+	function meshLoaded() {
+		dispatch('sceneloaded', true);
+		resize();
+	}
+
 	injectLookAtPlugin();
 </script>
 
-<T.PerspectiveCamera makeDefault position={[-5, 6, 10]} fov={25} lookAt={[0, 0, 0]}>
+<T.PerspectiveCamera
+	makeDefault
+	position={[-5, 6, 10]}
+	fov={25}
+	lookAt={[0, 0, 0]}
+	onready={resize()}
+>
 	<!-- <OrbitControls enableDamping target={[0, 0, 0]} /> -->
 </T.PerspectiveCamera>
 
@@ -147,6 +177,8 @@
 
 <Spaceship
 	bind:ref={spaceshipRef}
+	bind:width={shipWidth}
+	on:loaded={meshLoaded}
 	position={[0, translateY, 0]}
 	rotation={[angleZ, 0, angleZ, 'ZXY']}
 />

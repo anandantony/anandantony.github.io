@@ -22,10 +22,10 @@
 
 	function resetStar(star: Star) {
 		if (r(0, 1) > 0.8) {
-			star.pos = new Vector3(r(-10, -30), r(-5, 5), r(-6, 6));
+			star.pos = new Vector3(r(-10, -30), r(-15, 15), r(-6, 6));
 			star.len = r(1.5, 15);
 		} else {
-			star.pos = new Vector3(r(-45, -15), r(-10.5, 1.5), r(-45, 30));
+			star.pos = new Vector3(r(-45, -15), r(-15, 15), r(-45, 30));
 			star.len = r(2.5, 20);
 		}
 

@@ -23,6 +23,6 @@
 		background-image: url('$lib/images/404.jpg');
 		background-position: bottom;
 		background-size: cover;
-		filter: blur(2px) grayscale(1);
+		filter: blur(2px) saturate(0.2) brightness(1.5);
 	}
 </style>

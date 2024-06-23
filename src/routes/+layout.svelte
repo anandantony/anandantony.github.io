@@ -35,8 +35,8 @@
 	});
 </script>
 
-<!-- <div class="noise fixed"></div> -->
-<main class="h-screen w-full">
+<div class="noise fixed"></div>
+<main class="fixed inset-0">
 	<slot />
 
 	{#if !isTouch}
@@ -53,7 +53,7 @@
 		cursor: none;
 	}
 
-	/* .noise {
+	.noise {
 		inset: 0;
 		background-color: #050505;
 		overflow: hidden;
@@ -70,7 +70,7 @@
 			z-index: 1;
 			opacity: 0.3;
 		}
-	} */
+	}
 
 	@keyframes -global-grain {
 		0%,
